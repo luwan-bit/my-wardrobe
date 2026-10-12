@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -27,7 +28,6 @@ export default function AddItemPage() {
     if (!name || !image) return alert("请填写名称并上传图片");
     setLoading(true);
 
-    // 去掉中文文件名，只用时间戳 + 扩展名
     const ext = image.name.split(".").pop() || "jpg";
     const fileName = `${Date.now()}.${ext}`;
 

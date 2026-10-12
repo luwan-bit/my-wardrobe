@@ -1,4 +1,5 @@
 "use client";
+export const runtime = 'edge';
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -30,8 +31,8 @@ export default function WishlistCategoryPage() {
       .eq("category", category.id)
       .then(({ data }) => {
         if (data) {
-          const order = { certain: 1, medium: 2, like: 3 };
-          data.sort((a, b) => (order[a.level as keyof typeof order] || 9) - (order[b.level as keyof typeof order] || 9));
+          const order: Record<string, number> = { certain: 1, medium: 2, like: 3 };
+          data.sort((a, b) => (order[a.level] || 9) - (order[b.level] || 9));
           setItems(data);
         }
       });
