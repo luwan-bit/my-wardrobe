@@ -3,12 +3,33 @@
 @tailwind utilities;
 
 html, body {
-  background-color: #FFFFFF !important;
+  background-color: #FFFFFF;
   color: #111111;
   font-family: var(--font-sans), system-ui, sans-serif;
   min-height: 100%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+html.dark, html.dark body {
+  background-color: #111111;
+  color: #FFFFFF;
 }
 
 .font-serif {
   font-family: var(--font-serif), Georgia, serif;
+}
+
+/* 首页灰色栏适配 */
+.header-bar {
+  background-color: #CCCCCC;
+  color: #111111;
+}
+html.dark .header-bar {
+  background-color: #FFFFFF;
+  color: #111111;
+}
+
+/* 边框适配 */
+html.dark .border-border {
+  border-color: #333333;
 }
