@@ -58,4 +58,27 @@ export default function ItemDetailPage() {
         <div className="space-y-2 text-body mb-8">
           {item.brand && <p>品牌：{item.brand}</p>}
           {item.price && <p>价格：{item.price}</p>}
-          {item.notes && <p>备注：
+          {item.notes && <p>备注：{item.notes}</p>}
+        </div>
+
+        <div className="flex gap-4">
+          <button onClick={() => setConfirm(true)} className="border border-red-500 text-red-600 px-6 py-2 text-sm rounded">
+            删除
+          </button>
+        </div>
+
+        {confirm && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+            <div className="bg-white p-6 max-w-sm w-full mx-4 rounded">
+              <p className="mb-4">确定删除「{item.name}」吗？</p>
+              <div className="flex gap-3">
+                <button onClick={() => setConfirm(false)} className="flex-1 border py-2 rounded">取消</button>
+                <button onClick={handleDelete} className="flex-1 bg-black text-white py-2 rounded">删除</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
