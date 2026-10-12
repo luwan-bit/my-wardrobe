@@ -22,18 +22,25 @@ export function DailyImages() {
     load();
   }, []);
 
-  if (images.length === 0) return <div className="text-muted text-center py-8">暂无图片</div>;
+  if (images.length === 0) return <div className="text-muted text-center py-12">暂无图片</div>;
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 mb-10">
-      {images.map((img, i) => (
-        <img
-          key={img.id}
-          src={img.image_url}
-          alt={img.name}
-          className={`object-cover rounded ${i % 2 === 0 ? "w-28 h-36" : "w-24 h-32"} md:w-36 md:h-48`}
-        />
-      ))}
+    <div className="w-full max-w-3xl mx-auto px-4 mb-12">
+      <div className="grid grid-cols-2 gap-3 md:gap-5">
+        {images.map((img, i) => (
+          <div
+            key={img.id}
+            className={`${i === 0 ? "col-span-2" : ""} ${i === 4 ? "col-span-2 md:col-span-1" : ""}`}
+          >
+            <img
+              src={img.image_url}
+              alt={img.name}
+              className="w-full object-cover rounded-sm"
+              style={{ aspectRatio: i === 0 ? "4/3" : "1/1" }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
