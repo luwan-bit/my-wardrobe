@@ -33,7 +33,8 @@ export function CircularNav() {
 
   return (
     <div className="flex flex-col items-center select-none">
-      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-black mb-1" />
+      {/* 倒三角 - 深色主题下变白 */}
+      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-black dark:border-t-white mb-1" />
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="transition-transform duration-500 ease-out" style={{ transform: `rotate(${rotation}deg)` }}>
           {MODULES.map((mod, i) => {
@@ -43,17 +44,32 @@ export function CircularNav() {
             const labelPos = polarToCartesian(cx, cy, r * 0.62, mid);
             return (
               <g key={mod.path} onClick={() => (isSelected ? router.push(mod.path) : setIndex(i))} className="cursor-pointer">
-                <path d={describeSector(cx, cy, r, start, start + 90)} fill={isSelected ? "#111" : "transparent"} stroke="#e5e5e5" strokeWidth="1" />
-                <text x={labelPos.x} y={labelPos.y} textAnchor="middle" dominantBaseline="middle" fill={isSelected ? "#fff" : "#6b6b6b"} fontSize="11" letterSpacing="0.05em" transform={`rotate(${mid}, ${labelPos.x}, ${labelPos.y})`} className="pointer-events-none uppercase">
+                <path
+                  d={describeSector(cx, cy, r, start, start + 90)}
+                  fill={isSelected ? "#111" : "transparent"}
+                  stroke="#e5e5e5"
+                  strokeWidth="2.5"
+                />
+                <text
+                  x={labelPos.x}
+                  y={labelPos.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill={isSelected ? "#fff" : "#6b6b6b"}
+                  fontSize="11"
+                  letterSpacing="0.05em"
+                  transform={`rotate(${mid}, ${labelPos.x}, ${labelPos.y})`}
+                  className="pointer-events-none uppercase"
+                >
                   {mod.label}
                 </text>
               </g>
             );
           })}
-          <circle cx={cx} cy={cy} r="28" fill="white" stroke="#e5e5e5" />
+          <circle cx={cx} cy={cy} r="28" fill="white" stroke="#e5e5e5" strokeWidth="2" />
         </svg>
       </div>
-      <p className="mt-6 text-sm text-gray-700">{MODULES[index].label}</p>
+      <p className="mt-6 text-sm text-gray-700 dark:text-gray-300">{MODULES[index].label}</p>
       <p className="mt-1 text-xs text-gray-400">点击已选扇区进入</p>
     </div>
   );
