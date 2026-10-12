@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MODULES = [
   { label: "MY COLLECTION", path: "/collection" },
@@ -25,16 +25,23 @@ function describeSector(cx: number, cy: number, r: number, start: number, end: n
 export function CircularNav() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
+  const [isDark, setIsDark] = useState(false);
   const rotation = -index * 90 - 45;
   const size = 280;
   const cx = size / 2;
   const cy = size / 2;
   const r = 120;
 
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
   return (
     <div className="flex flex-col items-center select-none">
-      {/* 倒三角 - 深色主题下变白 */}
-      <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-black dark:border-t-white mb-1" />
+      <div
+        className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent mb-1"
+        style={{ borderTopColor: isDark ? "#ffffff" : "#000000" }}
+      />
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="transition-transform duration-500 ease-out" style={{ transform: `rotate(${rotation}deg)` }}>
           {MODULES.map((mod, i) => {
