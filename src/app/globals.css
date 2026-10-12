@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #FFFFFF;
+html, body {
+  background-color: #FFFFFF !important;
   color: #111111;
   font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100%;
 }
 
 .font-serif {
