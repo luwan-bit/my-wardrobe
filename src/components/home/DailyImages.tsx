@@ -17,7 +17,7 @@ export function DailyImages() {
       const today = new Date().toISOString().slice(0, 10);
       const seed = today.split("-").reduce((a, b) => a + parseInt(b), 0);
       const shuffled = all.sort((a, b) => ((a.id.charCodeAt(0) + seed) % 100) - ((b.id.charCodeAt(0) + seed) % 100));
-      setImages(shuffled.slice(0, 5));
+      setImages(shuffled.slice(0, 4));
     };
     load();
   }, []);
@@ -25,22 +25,16 @@ export function DailyImages() {
   if (images.length === 0) return <div className="text-muted text-center py-12">暂无图片</div>;
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 mb-12">
-      <div className="grid grid-cols-2 gap-3 md:gap-5">
-        {images.map((img, i) => (
-          <div
-            key={img.id}
-            className={`${i === 0 ? "col-span-2" : ""} ${i === 4 ? "col-span-2 md:col-span-1" : ""}`}
-          >
-            <img
-              src={img.image_url}
-              alt={img.name}
-              className="w-full object-cover rounded-sm"
-              style={{ aspectRatio: i === 0 ? "4/3" : "1/1" }}
-            />
-          </div>
-        ))}
-      </div>
+    <div className="w-full max-w-2xl mx-auto px-5 mb-12 space-y-6">
+      {images.map((img) => (
+        <div key={img.id} className="w-full">
+          <img
+            src={img.image_url}
+            alt={img.name}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      ))}
     </div>
   );
 }
