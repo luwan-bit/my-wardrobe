@@ -1,52 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCollection } from "@/lib/storage";
-import { getWishlist } from "@/lib/wishlist-storage";
+import { createClient } from "@/lib/supabase/client";
+
+type ImageItem = { id: string; image_url: string; name: string };
 
 export function DailyImages() {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<ImageItem[]>([]);
+  const supabase = createClient();
 
   useEffect(() => {
-    const collection = getCollection().filter((i) => i.image).map((i) => i.image);
-    const wishlist = getWishlist().filter((i) => i.image).map((i) => i.image);
-    const all = [...collection, ...wishlist];
-    // 取前 5 张
-    setImages(all.slice(0, 5));
+    const load = async () => {
+      const { data: col } = await supabase.from("collections").select("id, image_url, name");
+      const { data: wish } = await supabase.from("wishlist").select("id, image_url, name");
+      const all = [...(col || []), ...(wish || [])].filter((i) => i.image_url);
+      const today = new Date().toISOString().slice(0, 10);
+      const seed = today.split("-").reduce((a, b) => a + parseInt(b), 0);
+      const shuffled = all.sort((a, b) => ((a.id.charCodeAt(0) + seed) % 100) - ((b.id.charCodeAt(0) + seed) % 100));
+      setImages(shuffled.slice(0, 5));
+    };
+    load();
   }, []);
 
-  if (images.length === 0) {
-    return (
-      <section className="w-full max-w-3xl my-10 flex items-center justify-center min-h-[160px]">
-        <p className="text-[13px] tracking-wide text-gray-400">每日随机图片</p>
-      </section>
-    );
-  }
+  if (images.length === 0) return <div className="text-muted text-center py-8">暂无图片</div>;
 
   return (
-    <section className="w-full max-w-4xl my-10 px-2">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[120px] md:auto-rows-[180px]">
-        {images.map((src, i) => {
-          // 让第 1 张和第 3 张更大一点
-          const isLarge = i === 0 || i === 2;
-          return (
-            <div
-              key={i}
-              className={`
-                overflow-hidden rounded
-                ${isLarge ? "row-span-2" : "row-span-1"}
-                ${i === 0 ? "col-span-2 md:col-span-1" : ""}
-              `}
-            >
-              <img
-                src={src}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            </div>
-          );
-        })}
-      </div>
-    </section>
+    <div className="flex flex-wrap justify-center gap-3 mb-10">
+      {images.map((img, i) => (
+        <img
+          key={img.id}
+          src={img.image_url}
+          alt={img.name}
+          className={`object-cover rounded ${i % 2 === 0 ? "w-28 h-36" : "w-24 h-32"} md:w-36 md:h-48`}
+        />
+      ))}
+    </div>
   );
 }

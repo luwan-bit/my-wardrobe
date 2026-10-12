@@ -7,16 +7,20 @@ import { Footer } from "@/components/layout/Footer";
 export default function HomePage() {
   return (
     <main className="min-h-dvh flex flex-col bg-white">
-      {/* 顶部灰色导航栏 */}
+      {/* 顶部灰色导航栏 - 只放标题 */}
       <div className="w-full bg-[#CCCCCC]">
         <div className="max-w-page mx-auto px-6 py-10 flex flex-col items-center">
           <BrandHeader />
-          <PhilosophicalQuote />
         </div>
       </div>
 
+      {/* 英文短句放在灰色栏外面左下角 */}
+      <div className="max-w-page mx-auto w-full px-6 pt-4">
+        <PhilosophicalQuote />
+      </div>
+
       {/* 下方内容区 */}
-      <div className="flex-1 flex flex-col items-center px-6 py-12">
+      <div className="flex-1 flex flex-col items-center px-6 py-8">
         <DailyImages />
         <CircularNav />
       </div>
