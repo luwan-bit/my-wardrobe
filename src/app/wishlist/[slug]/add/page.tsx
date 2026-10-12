@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BackButton } from "@/components/ui/BackButton";
 import { CATEGORIES } from "@/lib/constants";
-import { addWishlistItem } from "@/lib/wishlist-storage";
+import { createClient } from "@/lib/supabase/client";
 
 const LEVELS = [
   { id: "certain", label: "确定" },
@@ -17,34 +17,54 @@ export default function AddWishPage() {
   const router = useRouter();
   const slug = params.slug as string;
   const category = CATEGORIES.find((c) => c.slug === slug);
+  const supabase = createClient();
 
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
   const [level, setLevel] = useState("medium");
   const [price, setPrice] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [saving, setSaving] = useState(false);
 
   if (!category) return <div className="p-8">分类不存在</div>;
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result as string);
-    reader.readAsDataURL(file);
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !image) return alert("请填写名称并上传图片");
-    addWishlistItem({
+    if (!name || !imageFile) return alert("请填写名称并上传图片");
+    setSaving(true);
+
+    const ext = imageFile.name.split(".").pop();
+    const fileName = `${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage.from("wardrobe-images").upload(fileName, imageFile);
+    if (uploadError) {
+      alert("图片上传失败：" + uploadError.message);
+      setSaving(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from("wardrobe-images").getPublicUrl(fileName);
+
+    const { error } = await supabase.from("wishlist").insert({
       name,
       category: category.id,
-      image,
-      level: level as any,
+      image_url: urlData.publicUrl,
+      level,
       price,
       purpose,
     });
+
+    setSaving(false);
+    if (error) {
+      alert("保存失败：" + error.message);
+      return;
+    }
     router.push(`/wishlist/${slug}`);
   };
 
@@ -60,7 +80,7 @@ export default function AddWishPage() {
           <div>
             <label className="block text-caption mb-1">图片 *</label>
             <input type="file" accept="image/*" onChange={handleImage} />
-            {image && <img src={image} alt="" className="mt-2 w-32 h-32 object-cover rounded" />}
+            {preview && <img src={preview} alt="" className="mt-2 w-32 h-32 object-cover rounded" />}
           </div>
           <div>
             <label className="block text-caption mb-1">名称 *</label>
@@ -82,8 +102,8 @@ export default function AddWishPage() {
             <label className="block text-caption mb-1">入手用途</label>
             <textarea value={purpose} onChange={(e) => setPurpose(e.target.value)} className="w-full border border-border px-3 py-2 rounded" rows={3} />
           </div>
-          <button type="submit" className="w-full bg-[#333333] text-white py-3 text-sm rounded">
-            保存
+          <button type="submit" disabled={saving} className="w-full bg-[#333333] text-white py-3 text-sm rounded disabled:opacity-50">
+            {saving ? "保存中..." : "保存"}
           </button>
         </form>
       </div>
