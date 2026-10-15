@@ -7,3 +7,7 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+// Enable Cloudflare bindings during local `next dev`
+const { initOpenNextCloudflareForDev } = require("@opennextjs/cloudflare");
+initOpenNextCloudflareForDev();
