@@ -61,9 +61,15 @@ html.dark .header-bar {
   color: #111111;
 }
 
-/* Marquee pause on hover */
-.marquee-track:hover {
-  animation-play-state: paused;
+/* Magazine marquee: JS-driven (rAF + pointer drag); no CSS animation pause */
+.marquee-track {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.marquee-track:active {
+  cursor: grabbing;
 }
 
 @layer components {
