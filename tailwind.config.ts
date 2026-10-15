@@ -1,16 +1,26 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
-        background: "#ffffff",
-        foreground: "#111111",
-        muted: "#6b6b6b",
-        "muted-light": "#9a9a9a",
-        border: "#e5e5e5",
-        "border-dark": "#d0d0d0",
+        background: "var(--color-background)",
+        foreground: "var(--color-foreground)",
+        muted: "var(--color-muted)",
+        "muted-light": "var(--color-muted-light)",
+        border: "var(--color-border)",
+        "border-dark": "var(--color-border-dark)",
+        primary: "var(--color-primary)",
+        "primary-hover": "var(--color-primary-hover)",
+        "primary-fg": "var(--color-primary-fg)",
+        surface: "var(--color-surface)",
+        "surface-hover": "var(--color-surface-hover)",
+        chrome: "var(--color-chrome)",
+        "chrome-hover": "var(--color-chrome-hover)",
+        danger: "var(--color-danger)",
+        "danger-fg": "var(--color-danger-fg)",
       },
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
@@ -25,6 +35,15 @@ const config: Config = {
       maxWidth: {
         content: "720px",
         page: "960px",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 48s linear infinite",
       },
     },
   },

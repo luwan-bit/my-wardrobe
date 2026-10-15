@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BackButton } from "@/components/ui/BackButton";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { CATEGORIES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
 
@@ -71,38 +71,37 @@ export default function AddWishPage() {
   return (
     <main className="min-h-dvh">
       <div className="max-w-page mx-auto px-5 pt-6 pb-12">
-        <div className="flex items-center mb-8">
-          <BackButton href={`/wishlist/${slug}`} label="返回列表" />
-        </div>
-        <h1 className="font-serif text-title mb-8">添加愿望</h1>
+        <PageHeader backHref={`/wishlist/${slug}`} backLabel="返回列表" title="ADD WISH" subtitle="添加愿望" />
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
           <div>
-            <label className="block text-caption mb-1">图片 *</label>
+            <label className="field-label">图片 *</label>
             <input type="file" accept="image/*" onChange={handleImage} />
             {preview && <img src={preview} alt="" className="mt-2 w-32 h-32 object-cover rounded" />}
           </div>
           <div>
-            <label className="block text-caption mb-1">名称 *</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border px-3 py-2 rounded" required />
+            <label className="field-label">名称 *</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="field-input" required />
           </div>
           <div>
-            <label className="block text-caption mb-1">想要程度 *</label>
-            <select value={level} onChange={(e) => setLevel(e.target.value)} className="w-full border border-border px-3 py-2 rounded">
+            <label className="field-label">想要程度 *</label>
+            <select value={level} onChange={(e) => setLevel(e.target.value)} className="field-input">
               {LEVELS.map((l) => (
-                <option key={l.id} value={l.id}>{l.label}</option>
+                <option key={l.id} value={l.id}>
+                  {l.label}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-caption mb-1">参考价格</label>
-            <input value={price} onChange={(e) => setPrice(e.target.value)} className="w-full border border-border px-3 py-2 rounded" />
+            <label className="field-label">参考价格</label>
+            <input value={price} onChange={(e) => setPrice(e.target.value)} className="field-input" />
           </div>
           <div>
-            <label className="block text-caption mb-1">入手用途</label>
-            <textarea value={purpose} onChange={(e) => setPurpose(e.target.value)} className="w-full border border-border px-3 py-2 rounded" rows={3} />
+            <label className="field-label">入手用途</label>
+            <textarea value={purpose} onChange={(e) => setPurpose(e.target.value)} className="field-input" rows={3} />
           </div>
-          <button type="submit" disabled={saving} className="w-full bg-[#333333] text-white py-3 text-sm rounded disabled:opacity-50">
+          <button type="submit" disabled={saving} className="btn-primary w-full">
             {saving ? "保存中..." : "保存"}
           </button>
         </form>

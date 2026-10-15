@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BackButton } from "@/components/ui/BackButton";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { CATEGORIES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
 
@@ -30,9 +30,7 @@ export default function AddItemPage() {
     const ext = image.name.split(".").pop() || "jpg";
     const fileName = `${Date.now()}.${ext}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from("wardrobe-images")
-      .upload(fileName, image);
+    const { error: uploadError } = await supabase.storage.from("wardrobe-images").upload(fileName, image);
 
     if (uploadError) {
       alert("图片上传失败：" + uploadError.message);
@@ -40,9 +38,9 @@ export default function AddItemPage() {
       return;
     }
 
-    const { data: { publicUrl } } = supabase.storage
-      .from("wardrobe-images")
-      .getPublicUrl(fileName);
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("wardrobe-images").getPublicUrl(fileName);
 
     const { error: insertError } = await supabase.from("collections").insert({
       name,
@@ -64,33 +62,30 @@ export default function AddItemPage() {
   return (
     <main className="min-h-dvh">
       <div className="max-w-page mx-auto px-5 pt-6 pb-12">
-        <div className="flex items-center mb-8">
-          <BackButton href={`/collection/${slug}`} label="返回列表" />
-        </div>
-        <h1 className="font-serif text-title mb-8">添加藏品</h1>
+        <PageHeader backHref={`/collection/${slug}`} backLabel="返回列表" title="ADD ITEM" subtitle="添加藏品" />
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
           <div>
-            <label className="block text-caption mb-1">图片 *</label>
+            <label className="field-label">图片 *</label>
             <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
           </div>
           <div>
-            <label className="block text-caption mb-1">名称 *</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border px-3 py-2 rounded" required />
+            <label className="field-label">名称 *</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="field-input" required />
           </div>
           <div>
-            <label className="block text-caption mb-1">品牌</label>
-            <input value={brand} onChange={(e) => setBrand(e.target.value)} className="w-full border border-border px-3 py-2 rounded" />
+            <label className="field-label">品牌</label>
+            <input value={brand} onChange={(e) => setBrand(e.target.value)} className="field-input" />
           </div>
           <div>
-            <label className="block text-caption mb-1">购买价格</label>
-            <input value={price} onChange={(e) => setPrice(e.target.value)} className="w-full border border-border px-3 py-2 rounded" />
+            <label className="field-label">购买价格</label>
+            <input value={price} onChange={(e) => setPrice(e.target.value)} className="field-input" />
           </div>
           <div>
-            <label className="block text-caption mb-1">备注</label>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full border border-border px-3 py-2 rounded" rows={3} />
+            <label className="field-label">备注</label>
+            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="field-input" rows={3} />
           </div>
-          <button type="submit" disabled={loading} className="w-full bg-[#8A8A8A] text-white py-3 text-sm rounded disabled:opacity-50">
+          <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? "保存中..." : "保存"}
           </button>
         </form>

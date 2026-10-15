@@ -13,13 +13,18 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="max-w-page mx-auto w-full px-6 pt-4">
-        <PhilosophicalQuote />
-      </div>
+      <div className="flex-1 flex flex-col w-full">
+        <div className="pt-6 pb-2">
+          <DailyImages />
+        </div>
 
-      <div className="flex-1 flex flex-col items-center px-6 py-8">
-        <DailyImages />
-        <CircularNav />
+        <div className="max-w-page mx-auto w-full px-6 pb-4">
+          <CircularNav />
+        </div>
+
+        <div className="max-w-page mx-auto w-full px-6 pt-2 pb-6">
+          <PhilosophicalQuote />
+        </div>
       </div>
 
       <Footer />
