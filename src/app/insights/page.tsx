@@ -37,15 +37,17 @@ export default function InsightsPage() {
     load();
   }, []);
 
+  const maxCount = Math.max(1, ...stats.byCategory.map((c) => c.count));
+
   return (
     <main className="min-h-dvh">
-      <div className="max-w-page mx-auto px-5 pt-6 pb-12">
+      <div className="max-w-page mx-auto px-5 pt-6 pb-12 page-fade">
         <PageHeader backHref="/" backLabel="返回首页" title="INSIGHTS" subtitle="数据洞察" />
 
         <div className="grid grid-cols-2 gap-4 mb-12">
           <Link
             href="/collection"
-            className="border border-border bg-surface p-6 rounded-md hover:bg-surface-hover transition-colors"
+            className="border border-border bg-surface p-6 rounded-sm hover:bg-surface-hover transition-colors duration-150 active:opacity-80"
           >
             <p className="text-caption text-muted tracking-wide uppercase">收藏总数</p>
             <p className="font-serif text-5xl md:text-6xl leading-none mt-3 tabular-nums tracking-tight">
@@ -54,7 +56,7 @@ export default function InsightsPage() {
           </Link>
           <Link
             href="/wishlist"
-            className="border border-border bg-surface p-6 rounded-md hover:bg-surface-hover transition-colors"
+            className="border border-border bg-surface p-6 rounded-sm hover:bg-surface-hover transition-colors duration-150 active:opacity-80"
           >
             <p className="text-caption text-muted tracking-wide uppercase">愿望总数</p>
             <p className="font-serif text-5xl md:text-6xl leading-none mt-3 tabular-nums tracking-tight">
@@ -65,22 +67,34 @@ export default function InsightsPage() {
 
         <h2 className="font-serif text-lg mb-5 tracking-wide">分类分布</h2>
         <div className="space-y-1">
-          {stats.byCategory.map((c) => (
-            <Link
-              key={c.id}
-              href={`/collection/${c.slug}`}
-              className="flex items-baseline justify-between border-b border-border py-3.5 hover:bg-surface-hover px-1 -mx-1 rounded-sm transition-colors"
-            >
-              <span className="text-body">{c.name}</span>
-              <span
-                className={`font-serif text-2xl tabular-nums ${
-                  c.count === 0 ? "text-muted-light" : "text-foreground"
-                }`}
+          {stats.byCategory.map((c) => {
+            const pct = Math.round((c.count / maxCount) * 100);
+            return (
+              <Link
+                key={c.id}
+                href={`/collection/${c.slug}`}
+                className="flex items-center gap-3 md:gap-4 border-b border-border py-3.5 hover:bg-surface-hover px-1 -mx-1 transition-colors duration-150 active:opacity-70"
               >
-                {c.count}
-              </span>
-            </Link>
-          ))}
+                <span className="text-body flex-1 min-w-0 truncate">{c.name}</span>
+                <div
+                  className="w-16 sm:w-24 md:w-32 h-[2px] bg-border relative shrink-0 overflow-hidden"
+                  aria-hidden
+                >
+                  <span
+                    className="absolute inset-y-0 left-0 bg-foreground/75"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+                <span
+                  className={`font-serif text-2xl tabular-nums w-10 text-right shrink-0 ${
+                    c.count === 0 ? "text-muted-light" : "text-foreground"
+                  }`}
+                >
+                  {c.count}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </main>

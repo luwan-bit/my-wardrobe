@@ -3,31 +3,39 @@
 import Link from "next/link";
 
 const MODULES = [
-  { label: "MY COLLECTION", cn: "我的收藏", path: "/collection" },
-  { label: "WISHLIST", cn: "愿望清单", path: "/wishlist" },
-  { label: "INSIGHTS", cn: "数据洞察", path: "/insights" },
-  { label: "SETTINGS", cn: "设置", path: "/settings" },
+  { label: "MY COLLECTION", cn: "我的收藏", path: "/collection", mark: "01" },
+  { label: "WISHLIST", cn: "愿望清单", path: "/wishlist", mark: "02" },
+  { label: "INSIGHTS", cn: "数据洞察", path: "/insights", mark: "03" },
+  { label: "SETTINGS", cn: "设置", path: "/settings", mark: "04" },
 ];
 
 export function CircularNav() {
   return (
-    <nav className="w-full max-w-md mx-auto" aria-label="Main sections">
-      <ul className="grid grid-cols-2 gap-3">
+    <nav className="w-full max-w-lg mx-auto" aria-label="Main sections">
+      <ul className="flex flex-col border-t border-border">
         {MODULES.map((mod) => (
-          <li key={mod.path}>
+          <li key={mod.path} className="border-b border-border">
             <Link
               href={mod.path}
-              className="group flex flex-col items-start justify-between min-h-[96px] border border-border bg-surface px-4 py-4 rounded-md transition-colors hover:bg-surface-hover hover:border-foreground"
+              className="group flex items-baseline justify-between gap-4 py-4 px-1 transition-opacity duration-150 active:opacity-70"
             >
-              <span className="font-serif text-sm tracking-[0.08em] uppercase">{mod.label}</span>
-              <span className="mt-3 flex w-full items-center justify-between">
+              <span className="flex items-baseline gap-3 min-w-0">
+                <span className="text-[10px] tracking-[0.14em] text-muted-light tabular-nums shrink-0">
+                  {mod.mark}
+                </span>
+                <span className="font-serif text-sm md:text-base tracking-[0.1em] uppercase group-hover:opacity-70 transition-opacity">
+                  {mod.label}
+                </span>
+              </span>
+              <span className="flex items-center gap-2 shrink-0">
                 <span className="text-caption text-muted">{mod.cn}</span>
                 <svg
-                  width="14"
-                  height="14"
+                  width="12"
+                  height="12"
                   viewBox="0 0 16 16"
                   fill="none"
-                  className="text-muted group-hover:text-foreground transition-colors"
+                  className="text-muted-light group-hover:text-foreground transition-colors"
+                  aria-hidden
                 >
                   <path
                     d="M6 3.5L10.5 8L6 12.5"

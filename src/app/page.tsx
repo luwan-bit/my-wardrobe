@@ -13,7 +13,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col w-full">
+      <div className="flex-1 flex flex-col w-full page-fade">
         <div className="pt-6 pb-2">
           <DailyImages />
         </div>

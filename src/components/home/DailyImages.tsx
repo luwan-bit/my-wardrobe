@@ -167,18 +167,18 @@ export function DailyImages() {
   }
 
   if (pool.length === 0) {
-    return <div className="text-muted text-center py-12 mb-8">暂无图片</div>;
+    return <div className="text-muted text-center py-12 mb-8 text-caption">还没有图片，去收藏或愿望里添几件吧</div>;
   }
 
   return (
     <div className="w-full mb-10">
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-10 md:w-16 z-10 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-10 md:w-16 z-10 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-20 z-10 marquee-fade-l" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-20 z-10 marquee-fade-r" />
 
         <div
           ref={trackRef}
-          className="marquee-track flex w-max gap-4 md:gap-5 py-1 will-change-transform select-none"
+          className="marquee-track flex w-max gap-6 md:gap-8 py-1 will-change-transform select-none"
           style={{ touchAction: "pan-y", cursor: "grab" }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
@@ -188,7 +188,7 @@ export function DailyImages() {
           {track.map((img, idx) => (
             <figure
               key={`${img.id}-${idx}`}
-              className="relative shrink-0 w-[72vw] max-w-[420px] md:w-[380px] aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-surface-hover"
+              className="relative shrink-0 w-[72vw] max-w-[420px] md:w-[380px] aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-surface-hover border border-border/60"
             >
               <img
                 src={img.image_url}
@@ -205,9 +205,11 @@ export function DailyImages() {
       </div>
 
       {allItems.length > POOL && (
-        <button type="button" onClick={handleRefresh} className="btn-chrome mt-5 mx-auto block text-xs tracking-wide">
-          换一批
-        </button>
+        <div className="mt-4 px-6 flex justify-end">
+          <button type="button" onClick={handleRefresh} className="link-quiet underline-offset-4 hover:underline active:opacity-70">
+            换一批
+          </button>
+        </div>
       )}
     </div>
   );

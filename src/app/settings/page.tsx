@@ -44,10 +44,10 @@ export default function SettingsPage() {
 
   return (
     <main className="min-h-dvh">
-      <div className="max-w-page mx-auto px-5 pt-6 pb-12">
+      <div className="max-w-page mx-auto px-5 pt-6 pb-12 page-fade">
         <PageHeader backHref="/" backLabel="返回首页" title="SETTINGS" subtitle="设置" />
 
-        <div className="border border-border bg-surface p-5 rounded-md flex items-center justify-between mb-4">
+        <div className="border border-border bg-surface p-5 rounded-sm flex items-center justify-between mb-4">
           <div>
             <p className="font-medium">深色模式</p>
             <p className="text-caption text-muted mt-1">黑白配色切换</p>

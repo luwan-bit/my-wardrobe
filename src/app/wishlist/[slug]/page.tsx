@@ -41,7 +41,7 @@ export default function WishlistCategoryPage() {
 
   return (
     <main className="min-h-dvh">
-      <div className="max-w-page mx-auto px-5 pt-6 pb-12">
+      <div className="max-w-page mx-auto px-5 pt-6 pb-12 page-fade">
         <PageHeader
           backHref="/wishlist"
           backLabel="返回分类"
@@ -51,8 +51,9 @@ export default function WishlistCategoryPage() {
         />
 
         {items.length === 0 ? (
-          <div className="border border-border bg-surface p-10 text-center rounded-md mb-6">
-            <p className="text-muted mb-6">此分类暂无愿望。</p>
+          <div className="border border-dashed border-border bg-surface p-10 text-center rounded-sm mb-6">
+            <p className="text-muted mb-2">还没有愿望</p>
+            <p className="text-caption text-muted-light mb-6">记下心动单品，慢慢凑齐。</p>
             <Link href={`/wishlist/${slug}/add`} className="btn-primary">
               + 添加愿望
             </Link>
